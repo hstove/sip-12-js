@@ -25,12 +25,7 @@
       "pre-commit": "tsdx lint"
     }
   },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
-  },
+  "prettier": "@stacks/prettier-config",
   "name": "sip12",
   "author": "Hank Stoever",
   "module": "dist/sip12.esm.js",
@@ -45,11 +40,20 @@
     }
   ],
   "devDependencies": {
+    "@mempool/mempool.js": "^2.2.4",
     "@size-limit/preset-small-lib": "^6.0.3",
+    "@stacks/eslint-config": "1.0.9",
+    "@stacks/prettier-config": "^0.0.9",
+    "eslint": "^7.27.0",
+    "fetch-mock-jest": "^1.5.1",
     "husky": "^7.0.2",
+    "jest-fetch-mock": "^3.0.3",
     "size-limit": "^6.0.3",
     "tsdx": "^0.14.1",
     "tslib": "^2.3.1",
     "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "micro-stacks": "^0.0.30"
   }
 }
