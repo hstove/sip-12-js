@@ -4,8 +4,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "engines": {
     "node": ">=10"
@@ -27,7 +26,7 @@
     }
   },
   "prettier": "@stacks/prettier-config",
-  "name": "sip12",
+  "name": "sip-12",
   "author": "Hank Stoever",
   "module": "dist/sip12.esm.js",
   "size-limit": [
@@ -52,6 +51,7 @@
     "fetch-mock-jest": "^1.5.1",
     "husky": "^7.0.2",
     "jest-fetch-mock": "^3.0.3",
+    "np": "^7.5.0",
     "size-limit": "^6.0.3",
     "tsdx": "^0.14.1",
     "tslib": "^2.3.1",

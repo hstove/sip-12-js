@@ -56,26 +56,26 @@ export async function getBTCVoteTransactions(approve: boolean): Promise<VoteTran
   });
 }
 
-export async function transformVotes(votes: VoteTransaction[]): Promise<Vote[]> {
-  return Promise.all(
-    votes.map(async vote => {
-      const [reward, stacker] = await Promise.all([
-        getRewardData(vote.btcAddress),
-        getStackerData(vote.stxAddress),
-      ]);
+export async function transformVote(vote: VoteTransaction): Promise<Vote> {
+  const [reward, stacker] = await Promise.all([
+    getRewardData(vote.btcAddress),
+    getStackerData(vote.stxAddress),
+  ]);
 
-      let amount = 0n;
-      if (reward) {
-        amount = reward;
-      } else if (stacker) {
-        amount = stacker;
-      }
-      return {
-        ...vote,
-        amount,
-      };
-    })
-  );
+  let amount = 0n;
+  if (reward) {
+    amount = reward;
+  } else if (stacker) {
+    amount = stacker;
+  }
+  return {
+    ...vote,
+    amount,
+  };
+}
+
+export async function transformVotes(votes: VoteTransaction[]): Promise<Vote[]> {
+  return Promise.all(votes.map(transformVote));
 }
 
 export interface VoteData {
