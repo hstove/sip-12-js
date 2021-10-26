@@ -1,10 +1,17 @@
-import { TextDecoder } from 'util';
+import { TextDecoder, TextEncoder } from 'util';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 global.TextDecoder = TextDecoder;
+global.TextEncoder = TextEncoder;
 import fetchMock from 'fetch-mock-jest';
-import { btcToStxAddress, voteTransactionsUrl, getBTCVoteTransactions } from '../src';
-import { NO_VOTE_TXS, YES_VOTE_TXS } from './mocks';
+import { btcToStxAddress, voteTransactionsUrl, getBTCVoteTransactions, getVoteData } from '../src';
+import {
+  makeStackerDataResponse,
+  makeStackerInfoResponse,
+  NO_VOTE_TXS,
+  YES_VOTE_TXS,
+} from './mocks';
+import { stackingClubUrl } from '../src/stacking-club';
 
 test('converting btc address', () => {
   const btc = '31tXY8LMEcc3YzWwpFQj7ZGYE2U2BM1kk4';
@@ -13,20 +20,49 @@ test('converting btc address', () => {
   expect(converted).toEqual(stx);
 });
 
-describe('getting vote transactions', () => {
-  const yesUrl = voteTransactionsUrl(true);
-  const noUrl = voteTransactionsUrl(false);
+const yesUrl = voteTransactionsUrl(true);
+const noUrl = voteTransactionsUrl(false);
 
+describe('getting vote transactions', () => {
   beforeAll(() => {
+    fetchMock.mockReset();
     fetchMock.get(yesUrl, YES_VOTE_TXS);
     fetchMock.get(noUrl, NO_VOTE_TXS);
   });
 
   test('can get votes', async () => {
     const voteTxs = await getBTCVoteTransactions(true);
-    console.log('voteTxs', voteTxs);
+    expect(voteTxs.length).toEqual(0);
 
     const noVotes = await getBTCVoteTransactions(false);
-    console.log('noVotes', noVotes);
+    expect(noVotes.length).toEqual(0);
   });
+});
+
+test.only('can get full data', async () => {
+  fetchMock.mockReset();
+  // fetchMock.clea
+  fetchMock.get(yesUrl, YES_VOTE_TXS);
+  fetchMock.get(noUrl, NO_VOTE_TXS);
+
+  fetchMock.post('begin:https://stacks-node-api', (url, request) => {
+    const body = JSON.parse(request.body as string);
+    if (body.arguments[0].startsWith('0514')) {
+      return makeStackerInfoResponse(1000n);
+    }
+    return makeStackerInfoResponse(null);
+  });
+
+  fetchMock.get(
+    stackingClubUrl('31tXY8LMEcc3YzWwpFQj7ZGYE2U2BM1kk4'),
+    makeStackerDataResponse(null)
+  );
+  fetchMock.get(
+    stackingClubUrl('1LoPvZSimetbef4Lg28ivi9hnEek6Fr9Z4'),
+    makeStackerDataResponse(200)
+  );
+
+  const data = await getVoteData();
+  expect(data.totals.support).toEqual(1000n);
+  expect(data.totals.reject).toEqual(200n);
 });
