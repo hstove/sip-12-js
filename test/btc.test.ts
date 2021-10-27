@@ -4,14 +4,16 @@ import { TextDecoder, TextEncoder } from 'util';
 global.TextDecoder = TextDecoder;
 global.TextEncoder = TextEncoder;
 import fetchMock from 'fetch-mock-jest';
-import { btcToStxAddress, voteTransactionsUrl, getBTCVoteTransactions, getVoteData } from '../src';
 import {
   makeStackerDataResponse,
   makeStackerInfoResponse,
   NO_VOTE_TXS,
   YES_VOTE_TXS,
 } from './mocks';
-import { stackingClubUrl } from '../src/stacking-club';
+import { stackingClubUrl } from '../src/common/stacking-club';
+import { btcToStxAddress, voteTransactionsUrl } from '../src/common/utils';
+import { getBTCVoteTransactions } from '../src/get-btc-vote-txs';
+import { getVoteData } from '../src/get-vote-data';
 
 test('converting btc address', () => {
   const btc = '31tXY8LMEcc3YzWwpFQj7ZGYE2U2BM1kk4';

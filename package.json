@@ -15,9 +15,10 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "tsdx lint",
-    "prepare": "tsdx build",
     "size": "size-limit",
-    "analyze": "size-limit --why"
+    "analyze": "size-limit --why",
+    "lint:prettier": "prettier --check \"src/**/*.{ts,tsx}\" *.js",
+    "lint:prettier:fix": "prettier --write \"src/**/*.{ts,tsx}\" *.js"
   },
   "peerDependencies": {},
   "husky": {
@@ -52,6 +53,7 @@
     "husky": "^7.0.2",
     "jest-fetch-mock": "^3.0.3",
     "np": "^7.5.0",
+    "prettier": "^2.4.1",
     "size-limit": "^6.0.3",
     "tsdx": "^0.14.1",
     "tslib": "^2.3.1",

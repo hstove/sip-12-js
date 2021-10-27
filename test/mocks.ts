@@ -1,5 +1,5 @@
 import { noneCV, serializeCV, someCV, tupleCV, uintCV } from 'micro-stacks/clarity';
-import { StackerData } from '../src/stacking-club';
+import { StackerData } from '../src/common/stacking-club';
 
 function makeTx(address: string) {
   return {
