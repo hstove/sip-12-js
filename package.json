@@ -32,11 +32,11 @@
   "size-limit": [
     {
       "path": "dist/sip12.cjs.production.min.js",
-      "limit": "10 KB"
+      "limit": "50 KB"
     },
     {
       "path": "dist/sip12.esm.js",
-      "limit": "10 KB"
+      "limit": "50 KB"
     }
   ],
   "devDependencies": {

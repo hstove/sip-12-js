@@ -56,6 +56,17 @@ export async function getBTCVoteTransactions(approve: boolean): Promise<VoteTran
   });
 }
 
+export async function haloGetBTCVoteTransactions(approve: boolean): Promise<VoteTransaction[]> {
+  let url: string;
+  if (approve) {
+    url = 'https://sip12.halo.ms/btcApprove';
+  } else {
+    url = 'https://sip12.halo.ms/btcNoApprove';
+  }
+  const res = await fetch(url);
+  return await res.json();
+}
+
 export async function transformVote(vote: VoteTransaction): Promise<Vote> {
   const [reward, stacker] = await Promise.all([
     getRewardData(vote.btcAddress),
@@ -115,5 +126,20 @@ export async function getVoteData(): Promise<VoteData> {
       reject: no,
     },
     totals,
+  };
+}
+
+export async function haloGetVoteData(): Promise<VoteData> {
+  const res = await fetch('https://sip12.halo.ms/votedata');
+  const json = await res.json();
+  return {
+    votes: {
+      support: json.votes.support,
+      reject: json.votes.reject,
+    },
+    totals: {
+      support: BigInt(json.totals.support),
+      reject: BigInt(json.totals.reject),
+    },
   };
 }
