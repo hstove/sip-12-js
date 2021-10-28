@@ -43,13 +43,12 @@ describe('getting vote transactions', () => {
 
 test.only('can get full data', async () => {
   fetchMock.mockReset();
-  // fetchMock.clea
   fetchMock.get(yesUrl, YES_VOTE_TXS);
   fetchMock.get(noUrl, NO_VOTE_TXS);
 
   fetchMock.post('begin:https://stacks-node-api', (url, request) => {
     const body = JSON.parse(request.body as string);
-    if (body.arguments[0].startsWith('0514')) {
+    if (body.arguments[0].startsWith('0x0514')) {
       return makeStackerInfoResponse(1000n);
     }
     return makeStackerInfoResponse(null);
@@ -65,6 +64,6 @@ test.only('can get full data', async () => {
   );
 
   const data = await getVoteData();
-  expect(data.totals.support).toEqual(1000n);
-  expect(data.totals.reject).toEqual(200n);
+  expect(data.totals.support).toEqual('1000');
+  expect(data.totals.reject).toEqual('200');
 });
