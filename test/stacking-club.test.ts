@@ -5,7 +5,8 @@ global.TextDecoder = TextDecoder;
 global.TextEncoder = TextEncoder;
 import fetchMock from 'fetch-mock-jest';
 import 'cross-fetch/polyfill';
-import { getRewardData, getStackerData } from '../src/stacking-club';
+import { getRewardData } from '../src/stacking-club';
+import { getStackerData } from '../src/pox';
 import { makeStackerDataResponse, makeStackerInfoResponse } from './mocks';
 
 test.skip('testing pox data', async () => {
