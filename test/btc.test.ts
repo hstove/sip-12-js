@@ -4,14 +4,16 @@ import { TextDecoder, TextEncoder } from 'util';
 global.TextDecoder = TextDecoder;
 global.TextEncoder = TextEncoder;
 import fetchMock from 'fetch-mock-jest';
-import { btcToStxAddress, voteTransactionsUrl, getBTCVoteTransactions, getVoteData } from '../src';
 import {
   makeStackerDataResponse,
   makeStackerInfoResponse,
   NO_VOTE_TXS,
   YES_VOTE_TXS,
 } from './mocks';
-import { stackingClubUrl } from '../src/stacking-club';
+import { stackingClubUrl } from '../src/common/stacking-club';
+import { btcToStxAddress, voteTransactionsUrl } from '../src/common/utils';
+import { getBTCVoteTransactions } from '../src/get-btc-vote-txs';
+import { getVoteData } from '../src/get-vote-data';
 
 test('converting btc address', () => {
   const btc = '31tXY8LMEcc3YzWwpFQj7ZGYE2U2BM1kk4';
@@ -41,13 +43,12 @@ describe('getting vote transactions', () => {
 
 test.only('can get full data', async () => {
   fetchMock.mockReset();
-  // fetchMock.clea
   fetchMock.get(yesUrl, YES_VOTE_TXS);
   fetchMock.get(noUrl, NO_VOTE_TXS);
 
   fetchMock.post('begin:https://stacks-node-api', (url, request) => {
     const body = JSON.parse(request.body as string);
-    if (body.arguments[0].startsWith('0514')) {
+    if (body.arguments[0].startsWith('0x0514')) {
       return makeStackerInfoResponse(1000n);
     }
     return makeStackerInfoResponse(null);
@@ -63,6 +64,6 @@ test.only('can get full data', async () => {
   );
 
   const data = await getVoteData();
-  expect(data.totals.support).toEqual(1000n);
-  expect(data.totals.reject).toEqual(200n);
+  expect(data.totals.support).toEqual('1000');
+  expect(data.totals.reject).toEqual('200');
 });

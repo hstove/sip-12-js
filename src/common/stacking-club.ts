@@ -1,3 +1,5 @@
+import { CYCLE } from './constants';
+
 export interface StackerData {
   stackingTxs: {
     aggregate: {
@@ -8,16 +10,12 @@ export interface StackerData {
   };
 }
 
-export const CYCLE = 20;
-
 export function stackingClubUrl(btcAddress: string) {
-  const url = `https://api.stacking-club.com/api/stacker-data?variables=${btcAddress}____${CYCLE}`;
-  return url;
+  return `https://api.stacking-club.com/api/stacker-data?variables=${btcAddress}____${CYCLE}`;
 }
 
 export async function getRewardData(btcAddress: string) {
-  const url = stackingClubUrl(btcAddress);
-  const res = await fetch(url);
+  const res = await fetch(stackingClubUrl(btcAddress));
   const stackerData: StackerData = await res.json();
   const { amount } = stackerData.stackingTxs.aggregate.sum;
   return amount ? BigInt(amount) : null;
