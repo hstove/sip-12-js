@@ -5,3 +5,4 @@ export const BTC_VOTE_ADDRESSES = {
   NO: NO_ADDRESS,
 } as const;
 export type BTC_VOTE_ADDRESS = keyof typeof BTC_VOTE_ADDRESSES;
+export const CYCLE = 20;

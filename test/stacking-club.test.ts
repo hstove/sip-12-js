@@ -5,9 +5,9 @@ global.TextDecoder = TextDecoder;
 global.TextEncoder = TextEncoder;
 import fetchMock from 'fetch-mock-jest';
 import 'cross-fetch/polyfill';
-import { getRewardData } from '../src/stacking-club';
-import { getStackerData } from '../src/pox';
+import { getStackerData } from '../src/common/pox';
 import { makeStackerDataResponse, makeStackerInfoResponse } from './mocks';
+import { getRewardData } from '../src';
 
 test.skip('testing pox data', async () => {
   const result = await getStackerData('SMJ2T5JRTD9XV9KF8MA1YBX71TNKJJ0M73HDDAZ9');

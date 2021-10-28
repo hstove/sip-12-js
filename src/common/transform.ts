@@ -1,5 +1,6 @@
 import { Vote, VoteTransaction } from './types';
-import { getRewardData, getStackerData } from './stacking-club';
+import { getRewardData } from './stacking-club';
+import { getStackerData } from './pox';
 
 export async function transformVote(vote: VoteTransaction): Promise<Vote> {
   const [reward, stacker] = await Promise.all([

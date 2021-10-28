@@ -1,4 +1,4 @@
-export * from './pox';
+export * from './common/pox';
 export * from './common/constants';
 export * from './get-btc-vote-txs';
 export * from './get-vote-data';
