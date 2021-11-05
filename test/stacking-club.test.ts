@@ -7,7 +7,6 @@ import fetchMock from 'fetch-mock-jest';
 import 'cross-fetch/polyfill';
 import { getStackerData } from '../src/common/pox';
 import { makeStackerDataResponse, makeStackerInfoResponse } from './mocks';
-import { getRewardData } from '../src';
 
 test.skip('testing pox data', async () => {
   const result = await getStackerData('SMJ2T5JRTD9XV9KF8MA1YBX71TNKJJ0M73HDDAZ9');
@@ -24,10 +23,8 @@ test('getting stacks address information', async () => {
   expect(await getStackerData('SMJ2T5JRTD9XV9KF8MA1YBX71TNKJJ0M73HDDAZ9')).toEqual(null);
 
   fetchMock.getOnce('begin:https://api.stacking-club', makeStackerDataResponse(null));
-  expect(await getRewardData('SMJ2T5JRTD9XV9KF8MA1YBX71TNKJJ0M73HDDAZ9')).toEqual(null);
 
   fetchMock.getOnce('begin:https://api.stacking-club', makeStackerDataResponse(4000), {
     overwriteRoutes: true,
   });
-  expect(await getRewardData('SMJ2T5JRTD9XV9KF8MA1YBX71TNKJJ0M73HDDAZ9')).toEqual(4000n);
 });
