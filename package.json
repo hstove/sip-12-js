@@ -18,7 +18,8 @@
     "size": "size-limit",
     "analyze": "size-limit --why",
     "lint:prettier": "prettier --check \"src/**/*.{ts,tsx}\" *.js",
-    "lint:prettier:fix": "prettier --write \"src/**/*.{ts,tsx}\" *.js"
+    "lint:prettier:fix": "prettier --write \"src/**/*.{ts,tsx}\" *.js",
+    "get-data": "ts-node scripts/get-data.ts"
   },
   "peerDependencies": {},
   "husky": {
