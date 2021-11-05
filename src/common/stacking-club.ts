@@ -1,22 +1,19 @@
-import { CYCLE } from './constants';
+import { VoteTransaction } from './types';
 
-export interface StackerData {
-  stackingTxs: {
-    aggregate: {
-      sum: {
-        amount: number | null;
-      };
-    };
-  };
+async function fetchFromSip12Endpoint(btc_address: string, stx_address: string) {
+  try {
+    const res = await fetch(
+      `https://api.stacking.club/api/sip-12?btc_address=${btc_address}&stx_address=${stx_address}`
+    );
+    const data = await res.json();
+    const amount = data?.amount?.amount;
+    if (amount) return BigInt(amount);
+  } catch (e) {
+    console.error(e);
+  }
+  return null;
 }
 
-export function stackingClubUrl(btcAddress: string) {
-  return `https://api.stacking-club.com/api/stacker-data?variables=${btcAddress}____${CYCLE}`;
-}
-
-export async function getRewardData(btcAddress: string) {
-  const res = await fetch(stackingClubUrl(btcAddress));
-  const stackerData: StackerData = await res.json();
-  const { amount } = stackerData.stackingTxs.aggregate.sum;
-  return amount ? BigInt(amount) : null;
+export async function getStackedAmount(vote: VoteTransaction) {
+  return fetchFromSip12Endpoint(vote.btcAddress, vote.stxAddress);
 }
