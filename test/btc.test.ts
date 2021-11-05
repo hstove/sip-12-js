@@ -25,11 +25,16 @@ test('converting btc address', () => {
 const yesUrl = voteTransactionsUrl(true);
 const noUrl = voteTransactionsUrl(false);
 
+const lastYes = YES_VOTE_TXS[YES_VOTE_TXS.length - 1].txid;
+const lastNo = NO_VOTE_TXS[NO_VOTE_TXS.length - 1].txid;
+
 describe('getting vote transactions', () => {
   beforeAll(() => {
     fetchMock.mockReset();
     fetchMock.get(yesUrl, YES_VOTE_TXS);
     fetchMock.get(noUrl, NO_VOTE_TXS);
+    fetchMock.get(`${yesUrl}${lastYes}`, []);
+    fetchMock.get(`${noUrl}${lastNo}`, []);
   });
 
   test('can get votes', async () => {
@@ -45,6 +50,8 @@ test.only('can get full data', async () => {
   fetchMock.mockReset();
   fetchMock.get(yesUrl, YES_VOTE_TXS);
   fetchMock.get(noUrl, NO_VOTE_TXS);
+  fetchMock.get(`${yesUrl}${lastYes}`, []);
+  fetchMock.get(`${noUrl}${lastNo}`, []);
 
   fetchMock.post('begin:https://stacks-node-api', (url, request) => {
     const body = JSON.parse(request.body as string);

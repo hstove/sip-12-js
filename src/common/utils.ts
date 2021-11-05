@@ -11,5 +11,5 @@ function getVoteAddress(approve: boolean) {
 }
 
 export function voteTransactionsUrl(approve: boolean) {
-  return `https://mempool.space/api/address/${getVoteAddress(approve)}/txs`;
+  return `https://mempool.space/api/address/${getVoteAddress(approve)}/txs/chain/`;
 }

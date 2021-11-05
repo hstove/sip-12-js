@@ -2,10 +2,24 @@ import { VoteTransaction } from './common/types';
 import { btcToStxAddress, voteTransactionsUrl } from './common/utils';
 import { Tx } from '@mempool/mempool.js/lib/interfaces/bitcoin/transactions';
 
-export async function getBTCVoteTransactions(approve: boolean): Promise<VoteTransaction[]> {
-  const url = voteTransactionsUrl(approve);
+export async function getBTCVotesRecursive(approve: boolean, txs: Tx[]): Promise<Tx[]> {
+  let lastTxid = '';
+  if (txs.length !== 0) {
+    lastTxid = txs[txs.length - 1].txid;
+  }
+  const baseUrl = voteTransactionsUrl(approve);
+  const url = `${baseUrl}${lastTxid}`;
   const response = await fetch(url);
-  const txs: Tx[] = await response.json();
+  const newTxs: Tx[] = await response.json();
+  if (newTxs.length === 0) {
+    return txs;
+  }
+  txs.push(...newTxs);
+  return getBTCVotesRecursive(approve, txs);
+}
+
+export async function getBTCVoteTransactions(approve: boolean): Promise<VoteTransaction[]> {
+  const txs: Tx[] = await getBTCVotesRecursive(approve, []);
 
   const votes: VoteTransaction[] = [];
 
