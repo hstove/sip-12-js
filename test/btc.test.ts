@@ -55,6 +55,15 @@ test.only('can get full data', async () => {
     return makeStackerInfoResponse(null);
   });
 
+  fetchMock.get(
+    `begin:https://api.stacking.club/api/sip-12?btc_address=31tXY8LMEcc3YzWwpFQj7ZGYE2U2BM1kk4`,
+    { amount: { amount: 1000 } }
+  );
+  fetchMock.get(
+    `begin:https://api.stacking.club/api/sip-12?btc_address=1LoPvZSimetbef4Lg28ivi9hnEek6Fr9Z4`,
+    { amount: { amount: 200 } }
+  );
+
   const data = await getVoteData();
   expect(data.totals.support).toEqual('1000');
   expect(data.totals.reject).toEqual('200');

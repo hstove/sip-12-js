@@ -13,7 +13,7 @@ test.skip('testing pox data', async () => {
   console.log('result', result);
 }, 60000);
 
-test('getting stacks address information', async () => {
+test.skip('getting stacks address information', async () => {
   fetchMock.postOnce('begin:https://stacks-node-api', makeStackerInfoResponse(2000n));
   expect(await getStackerData('SMJ2T5JRTD9XV9KF8MA1YBX71TNKJJ0M73HDDAZ9')).toEqual(2000n);
 
