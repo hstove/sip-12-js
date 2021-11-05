@@ -10,7 +10,7 @@ import {
   NO_VOTE_TXS,
   YES_VOTE_TXS,
 } from './mocks';
-import { stackingClubUrl } from '../src/common/stacking-club';
+import { buildStackingClubUrl } from '../src/common/stacking-club';
 import { btcToStxAddress, voteTransactionsUrl } from '../src/common/utils';
 import { getBTCVoteTransactions } from '../src/get-btc-vote-txs';
 import { getVoteData } from '../src/get-vote-data';
@@ -55,11 +55,11 @@ test.only('can get full data', async () => {
   });
 
   fetchMock.get(
-    stackingClubUrl('31tXY8LMEcc3YzWwpFQj7ZGYE2U2BM1kk4'),
+    buildStackingClubUrl('31tXY8LMEcc3YzWwpFQj7ZGYE2U2BM1kk4'),
     makeStackerDataResponse(null)
   );
   fetchMock.get(
-    stackingClubUrl('1LoPvZSimetbef4Lg28ivi9hnEek6Fr9Z4'),
+    buildStackingClubUrl('1LoPvZSimetbef4Lg28ivi9hnEek6Fr9Z4'),
     makeStackerDataResponse(200)
   );
 

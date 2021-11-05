@@ -27,7 +27,7 @@
     }
   },
   "prettier": "@stacks/prettier-config",
-  "name": "sip-12",
+  "name": "@fungible-systems/sip-12",
   "author": "Hank Stoever",
   "module": "dist/sip-12.esm.js",
   "size-limit": [

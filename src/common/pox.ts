@@ -7,6 +7,7 @@ import {
   OptionalCV,
   ClarityType,
   cvToHex,
+  contractPrincipalCV,
 } from 'micro-stacks/clarity';
 
 const apiConfig = new Configuration({
@@ -19,13 +20,19 @@ type PoxStackerInfo = {
 };
 
 export async function getStackerData(stxAddress: string) {
+  // to support contract principals
+  const [address, contractName] = stxAddress.split('.');
+  const hex = !!contractName
+    ? cvToHex(contractPrincipalCV(address, contractName))
+    : cvToHex(standardPrincipalCV(stxAddress));
+
   const res = await stacksApi.callReadOnlyFunction({
     contractAddress: 'SP000000000000000000002Q6VF78',
     contractName: 'pox',
     functionName: 'get-stacker-info',
     readOnlyFunctionArgs: {
       sender: 'SP000000000000000000002Q6VF78',
-      arguments: [cvToHex(standardPrincipalCV(stxAddress))],
+      arguments: [hex],
     },
   });
 

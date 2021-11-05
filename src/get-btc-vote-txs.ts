@@ -2,6 +2,10 @@ import { VoteTransaction } from './common/types';
 import { btcToStxAddress, voteTransactionsUrl } from './common/utils';
 import { Tx } from '@mempool/mempool.js/lib/interfaces/bitcoin/transactions';
 
+function dedupe<T>(arr: T[], key: keyof T) {
+  return arr.filter((item, index, self) => index === self.findIndex(t => t[key] === item[key]));
+}
+
 export async function getBTCVoteTransactions(approve: boolean): Promise<VoteTransaction[]> {
   const url = voteTransactionsUrl(approve);
   const response = await fetch(url);
@@ -24,5 +28,5 @@ export async function getBTCVoteTransactions(approve: boolean): Promise<VoteTran
       console.error('Invalid address:', btcAddress);
     }
   });
-  return votes;
+  return dedupe(votes, 'btcAddress');
 }

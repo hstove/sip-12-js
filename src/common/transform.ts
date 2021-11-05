@@ -1,20 +1,12 @@
 import { Vote, VoteTransaction } from './types';
-import { getRewardData } from './stacking-club';
-import { getStackerData } from './pox';
+import { getStackedAmount } from './stacking-club';
 
 export async function transformVote(vote: VoteTransaction): Promise<Vote> {
-  const [reward, stacker] = await Promise.all([
-    getRewardData(vote.btcAddress),
-    getStackerData(vote.stxAddress),
-  ]);
-
-  let amount = 0n;
-  if (reward) amount = reward;
-  if (stacker) amount = stacker;
+  const amount = await getStackedAmount(vote);
 
   return {
     ...vote,
-    amount: amount.toString(10),
+    amount: amount?.toString(10) || '0',
   };
 }
 
